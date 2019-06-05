@@ -23,7 +23,7 @@ class LineChart extends Component {
 
   }
 
-  componentWillMount(){
+  componentDidMount =()=>{
       this.dataFromTSV();
   }
 
@@ -54,11 +54,6 @@ class LineChart extends Component {
   }
 
   dataFromTSV(path){
-
-   // path = path || 'data.tsv';
-
-   // d3.tsv(path, (err, data)=>{
-
         let data = this.state.data.map((d)=>{
             let date=new Date(d.x).toISOString().slice(0,10)
             return {
@@ -70,9 +65,6 @@ class LineChart extends Component {
         this.x.domain(d3.extent(data, (d)=> d.x) );
         this.y.domain([0, d3.max(data, (d)=> (d.y) )]);
         this.setState({data: data});
-        
-    //});
-
   }
 
     componentWillReceiveProps=(props)=>{

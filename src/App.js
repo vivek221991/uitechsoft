@@ -136,21 +136,25 @@ class App extends Component {
           "y": 17
         }
       ],
-      dataPoint: '30'
+      dataPoint: '',
+      count:3
 
     }
   }
   handleOnChange =(event) =>{
-    let {data}=this.state;
     this.setState({
       dataPoint: event.target.value
     });
   }
   addDataPoint=()=>{
-    let {dataPoint,data}=this.state;
+    let {dataPoint,data,count}=this.state;
     let newArr=JSON.parse(JSON.stringify(data));
-    newArr.push({x:new Date().toISOString().slice(0,10),y:Number(dataPoint)});
-    console.log(newArr);
+    var result = new Date();
+    this.setState({count:3+count},()=>{
+      result.setDate(result.getDate() + this.state.count);
+      newArr.push({x:new Date(result).toISOString().slice(0,10),y:Number(dataPoint)});  
+    })
+   console.log(newArr);
     this.setState({data:newArr});
   }
   filterLastWeek=()=>{
@@ -175,7 +179,11 @@ class App extends Component {
         <button onClick={this.addDataPoint.bind(this)}>Add Point</button>
         <button onClick={this.filterWeek.bind(this)}>Last Week</button>
         <button onClick={this.filterLastWeek.bind(this)}>Last Two Week</button>
-       <LineChart data={this.state.data} elementWidth={600} elementHeight={270}   />
+       <LineChart 
+          data={this.state.data} 
+          elementWidth={this.state.width} 
+          elementHeight={this.state.height}   
+        />
       </div>
     );
   }
